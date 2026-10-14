@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #17211b;
+  --muted: #657067;
+  --cream: #f7f4ee;
+  --sand: #e9e1d3;
+  --accent: #b56b3d;
+  --accent-dark: #8e4d29;
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--cream); color: var(--ink); }
+::selection { background: #d9bda8; color: #17211b; }
