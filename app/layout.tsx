@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 export const metadata: Metadata = {
   title: "Home Renovation in Mumbai | Free Site Visit",
   description:
@@ -11,6 +13,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>{children}</body>
+      <GoogleAnalytics gaId="G-L6FY39RG66" />
     </html>
   );
 }
