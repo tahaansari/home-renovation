@@ -13,7 +13,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>{children}</body>
-      <GoogleAnalytics gaId="G-L6FY39RG66" />
+      <GoogleAnalytics gaId="G-L6FY39GR66" />
     </html>
   );
 }
