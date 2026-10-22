@@ -1,5 +1,7 @@
 "use client";
 
+import { trackWhatsAppClick, trackSlideToForm } from "../lib/analytics";
+
 import {
   ArrowRight,
   Check,
@@ -14,6 +16,9 @@ import {
   Star,
   Wrench,
 } from "lucide-react";
+
+import { sendGAEvent } from "@next/third-parties/google";
+import React from "react";
 
 const WHATSAPP_NUMBER = "+918976321674"; // Replace with your WhatsApp number, country code included.
 
@@ -61,13 +66,24 @@ const services = [
   ["Swimming Pool Work", "Swimming pool construction, renovation and related work.", Ruler],
 ];
 
-function CTAButton({ href, children, dark = false }: { href: string; children: React.ReactNode; dark?: boolean }) {
+function CTAButton({
+  href,
+  children,
+  dark = false,
+  onClick,
+}: {
+  href: string;
+  children: React.ReactNode;
+  dark?: boolean;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+}) {
   return (
     <a
       href={href}
       className={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition hover:-translate-y-0.5 ${
         dark ? "bg-[#17211b] text-white hover:bg-[#28342c]" : "bg-[#b56b3d] text-white hover:bg-[#8e4d29]"
       }`}
+      onClick={onClick}
     >
       {children}
 
@@ -110,6 +126,10 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 
     alert("Thank you! We will contact you shortly.");
 
+    sendGAEvent("event", "generate_lead", {
+      form_name: "inquiry_form",
+    });
+
     form.reset();
   } catch (error) {
     console.error(error);
@@ -149,6 +169,9 @@ export default function Home() {
 
           <a
             href={whatsappLink}
+            onClick={() => {
+              trackWhatsAppClick("Header");
+            }}
             target="_blank"
             rel="noreferrer"
             className="hidden rounded-full bg-[#17211b] px-5 py-2.5 text-sm font-semibold text-white sm:inline-flex"
@@ -177,9 +200,11 @@ export default function Home() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <CTAButton href="#contact">Get Free Quote</CTAButton>
+              <CTAButton href="#contact" onClick={() => trackSlideToForm("Banner")}>
+                Get Free Quote
+              </CTAButton>
 
-              <CTAButton href={whatsappLink} dark>
+              <CTAButton href={whatsappLink} onClick={() => trackWhatsAppClick("Banner")} dark>
                 WhatsApp Us
               </CTAButton>
             </div>
@@ -248,7 +273,13 @@ export default function Home() {
               <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Our Recent Home Projects</h2>
             </div>
 
-            <a href={whatsappLink} target="_blank" rel="noreferrer" className="font-bold text-[#8e4d29]">
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noreferrer"
+              className="font-bold text-[#8e4d29]"
+              onClick={() => trackWhatsAppClick("Our Recent Home Projects")}
+            >
               Planning a similar renovation? → WhatsApp Us
             </a>
           </div>
@@ -360,6 +391,7 @@ export default function Home() {
           <a
             href="#contact"
             className="mt-7 inline-flex rounded-full bg-[#17211b] px-7 py-3.5 font-semibold text-white"
+            onClick={() => trackSlideToForm("Serving Mumbai")}
           >
             Get a Free Site Visit
           </a>
@@ -386,7 +418,15 @@ export default function Home() {
                 <Phone size={19} /> {PHONE_NUMBER}
               </a>
 
-              <a href={whatsappLink} target="_blank" rel="noreferrer" className="flex items-center gap-3">
+              <a
+                href={whatsappLink}
+                onClick={() => {
+                  trackWhatsAppClick("Get in touch");
+                }}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-3"
+              >
                 <MessageCircle size={19} /> Chat with us on WhatsApp
               </a>
             </div>
@@ -456,6 +496,9 @@ export default function Home() {
 
             <a
               href={whatsappLink}
+              onClick={() => {
+                trackWhatsAppClick("Form");
+              }}
               target="_blank"
               rel="noreferrer"
               className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-6 py-4 font-bold"
